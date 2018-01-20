@@ -9,7 +9,7 @@ This repo is perfect for you!
 
 We have create a simple Asp.Net Core Web Application with only one page.
 
-![Image](./Files/Img01.png)
+![Image](./Files/Img01.PNG)
 
 In this page you can find, starting from the top of the page to bottom:
 - The base url of the Web App
@@ -26,7 +26,7 @@ You can create a test scenario deploying **AzureDemoEnv** Azure Resource group p
 
 You have to choose 3 parameters:
 
-![Image](./Files/Img02.png)
+![Image](./Files/Img02.PNG)
 
 1. CosmosDBAccountName: The name of your Cosmos DB. The procedure will create 1 Cosmos DB Instance with Mongo DB.
 2. AppServicePlanPrefix: the prefix of your App Service Plans. 
@@ -55,17 +55,17 @@ mongoimport.exe --host <your_hostname>:10255 -u <your_username> -p <your_passwor
 
 The result will be an image like the following.
 
-![Image](./Files/Img10.png)
+![Image](./Files/Img10.PNG)
 
 You will see the four Web Apps loaded.
 You will also se that the write region will have the fastest response time.
 
 Now you can go to the Azure Cosmos DB Azure Portal page and select **Replicate Data Globally**
-![Image](./Files/Img03.png)
+![Image](./Files/Img03.PNG)
 
 Try to check all the regions inside the photo below and click Save.
 
-![Image](./Files/Img04.png)
+![Image](./Files/Img04.PNG)
 
 Without reloading the `CosmosDBGlobalDistribution.html`, once the Replication is finished, you will see that the response time will not change.
 This becouse MongoDB will still get data from the write region.
