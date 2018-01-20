@@ -1,0 +1,105 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>@Context.Request.Host@Context.Request.Path.Value.TrimEnd('/')</h2>
+        <div class="pretty p-default">
+            <input type="checkbox" id="enableReadPreferences" />
+            <div class="state p-success">
+                <label> Enable Read preferences</label>
+            </div>
+        </div>
+        <div id="main-graph" style="height: 250px;"></div>
+        <h3>Average (Msec): <span id="averageMsec"></span></h3>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajaxSetup({ cache: false });
+            renderLiveTempGraph();
+        });
+
+        // Get ready to store our graph instance in a variable
+        var mainGraph;
+
+        // Initialise an array for returning later
+        var graphData = [];
+
+		/*
+		 * From a frontend js file loaded in-browser, something like a main.js
+		 */
+        function renderLiveTempGraph() {
+            // Initialise a Morris line graph and store it in mainGraph
+            mainGraph = Morris.Line({
+                element: 'main-graph',
+                // Tell Morris where the data is
+                data: graphData,
+                // Tell Morris which property of the data is to be mapped to which axis
+                xkey: 'timestamp',
+                ykeys: ['elapsedMilliseconds'],
+
+                postUnits: ' msec',
+                lineColors: ['#199cef'],
+                goals: [10.0],
+                goalLineColors: ['#FF0000'],
+                labels: ['Milliseconds'],
+                lineWidth: 3,
+                pointSize: 2,
+                resize: true
+            });
+
+            // Call our API
+            var apiUrl = '@Url.Action("Get", "Restaurants", new { top = 2000 })';
+            $.getJSON(apiUrl, function (results) {
+                var graphPoint = {};
+                graphPoint.timestamp = results.timestamp;
+                graphPoint.elapsedMilliseconds = results.elapsedMilliseconds;
+                // Push the object to the array for returning
+                graphData.push(graphPoint);
+                // Set the already-initialised graph to use this new data
+                mainGraph.setData(graphData);
+                updateMedia();
+
+                // Set up an interval on which the graph data is to be updated
+                // Note the passing of the mainGraph parameter
+                setInterval(function () {
+                    updateLiveTempGraph(mainGraph);
+                }, 7000);
+            });
+        }
+
+        function updateLiveTempGraph(mainGraph) {
+            // Make our API call again, requesting fresh data
+            var apiUrl = '@Url.Action("Get", "Restaurants", new { top = 2000 })&enableReadPreferences=' + $("#enableReadPreferences").is(':checked');
+
+            $.getJSON(apiUrl, function (results) {
+                var graphPoint = {};
+                graphPoint.timestamp = results.timestamp;
+                graphPoint.elapsedMilliseconds = results.elapsedMilliseconds;
+                // Push the object to the array for returning
+                graphData.push(graphPoint);
+                updateMedia();
+                // Set the already-initialised graph to use this new data
+                mainGraph.setData(graphData);
+            });
+        }
+
+        function updateMedia() {
+            var myTotal = 0;
+
+            for (var i = 0, len = graphData.length; i < len; i++) {
+                myTotal += graphData[i].elapsedMilliseconds;
+            }
+
+            $("#averageMsec").text(parseInt(myTotal / graphData.length).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        }
+    </script>
+}

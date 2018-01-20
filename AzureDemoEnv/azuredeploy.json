@@ -1,0 +1,192 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "CosmosDBAccountName": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "The MongoDB database account name. Needs to be globally unique."
+      }
+    },
+    "AppServicePlanPrefix": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "The App Service Plan prefix to concat with 4 App Service Plan of 4 reagions. Needs to be globally unique."
+      }
+    },
+    "CosmosDBWriteRegion": {
+      "type": "string",
+      "defaultValue": "West Europe",
+      "allowedValues": [
+        "West Europe",
+        "West US",
+        "Brazil South",
+        "Australia Southeast"
+      ],
+      "metadata": {
+        "description": "Choose the Cosmos DB write region"
+      }
+    },
+  },
+  "variables": {
+    "AppSPWestEuropeName": "[concat(parameters('AppServicePlanPrefix'), 'AppSPWestEurope')]",
+    "AppSPAustraliaSoutheastName": "[concat(parameters('AppServicePlanPrefix'), 'AppSPAustraliaSoutheast')]",
+    "AppSPBrazilSouthName": "[concat(parameters('AppServicePlanPrefix'), 'AppSPBrazilSouth')]",
+    "AppSPWestUsName": "[concat(parameters('AppServicePlanPrefix'), 'AppSPWestUs')]",
+    "WebWestEuropeName": "[concat(parameters('AppServicePlanPrefix'), 'WebWestEurope')]",
+    "WebAustraliaSoutheastName": "[concat(parameters('AppServicePlanPrefix'), 'WebAustraliaSoutheast')]",
+    "WebBrazilSouthName": "[concat(parameters('AppServicePlanPrefix'), 'WebBrazilSouth')]",
+    "WebWestUsName": "[concat(parameters('AppServicePlanPrefix'), 'WebWestUs')]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-04-08",
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "kind": "MongoDB",
+      "name": "[parameters('CosmosDBAccountName')]",
+      "location": "[parameters('CosmosDBWriteRegion')]",
+      "properties": {
+        "databaseAccountOfferType": "Standard",
+        "name": "[parameters('CosmosDBAccountName')]"
+      }
+    },
+    {
+      "name": "[variables('AppSPWestEuropeName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "West Europe",
+      "apiVersion": "2015-08-01",
+      "sku": {
+        "name": "F1"
+      },
+      "dependsOn": [],
+      "tags": {
+        "displayName": "AppSPWestEurope"
+      },
+      "properties": {
+        "name": "[variables('AppSPWestEuropeName')]",
+        "numberOfWorkers": 1
+      }
+    },
+    {
+      "name": "[variables('AppWestEuropeName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "West Europe",
+      "apiVersion": "2015-08-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('AppSPWestEuropeName'))]"
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', variables('AppSPWestEuropeName')))]": "Resource",
+        "displayName": "WebWestEurope"
+      },
+      "properties": {
+        "name": "[variables('WebWestEuropeName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('AppSPWestEuropeName'))]"
+      }
+    },
+    {
+      "name": "[variables('AppSPAustraliaSoutheastName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "Australia Southeast",
+      "apiVersion": "2015-08-01",
+      "sku": {
+        "name": "F1"
+      },
+      "dependsOn": [],
+      "tags": {
+        "displayName": "AppSPAustraliaSoutheast"
+      },
+      "properties": {
+        "name": "[variables('AppSPAustraliaSoutheastName')]",
+        "numberOfWorkers": 1
+      }
+    },
+    {
+      "name": "[variables('WebAustraliaSoutheastName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "Australia Southeast",
+      "apiVersion": "2015-08-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('AppSPAustraliaSoutheastName'))]"
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', variables('AppSPAustraliaSoutheastName')))]": "Resource",
+        "displayName": "WebAustraliaSoutheast"
+      },
+      "properties": {
+        "name": "[variables('WebAustraliaSoutheastName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('AppSPAustraliaSoutheastName'))]"
+      }
+    },
+    {
+      "name": "[variables('AppSPBrazilSouthName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "Brazil South",
+      "apiVersion": "2015-08-01",
+      "sku": {
+        "name": "F1"
+      },
+      "dependsOn": [],
+      "tags": {
+        "displayName": "AppSPBrazilSouth"
+      },
+      "properties": {
+        "name": "[variables('AppSPBrazilSouthName')]",
+        "numberOfWorkers": 1
+      }
+    },
+    {
+      "name": "[variables('WebBrazilSouthName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "Brazil South",
+      "apiVersion": "2015-08-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('AppSPBrazilSouthName'))]"
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', variables('AppSPBrazilSouthName')))]": "Resource",
+        "displayName": "WebBrazilSouth"
+      },
+      "properties": {
+        "name": "[variables('WebBrazilSouthName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('AppSPBrazilSouthName'))]"
+      }
+    },
+    {
+      "name": "[variables('AppSPWestUsName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "West US",
+      "apiVersion": "2015-08-01",
+      "sku": {
+        "name": "F1"
+      },
+      "dependsOn": [],
+      "tags": {
+        "displayName": "AppSPWestUs"
+      },
+      "properties": {
+        "name": "[variables('AppSPWestUsName')]",
+        "numberOfWorkers": 1
+      }
+    },
+    {
+      "name": "[variables('WebWestUsName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "West US",
+      "apiVersion": "2015-08-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('AppSPWestUsName'))]"
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', variables('AppSPWestUsName')))]": "Resource",
+        "displayName": "WebWestUs"
+      },
+      "properties": {
+        "name": "[variables('WebWestUsName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('AppSPWestUsName'))]"
+      }
+    }
+  ]
+}

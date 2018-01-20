@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CosmosDBGlobalDistribution", "CosmosDBGlobalDistribution\CosmosDBGlobalDistribution.csproj", "{91972FB0-9E9C-4F10-AAB9-EFFB84832222}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{2BEFE84B-3518-443B-9315-ECCD9A94E1DF}"
+	ProjectSection(SolutionItems) = preProject
+		Files\CosmosDBGlobalDistribution.html = Files\CosmosDBGlobalDistribution.html
+		Files\restaurants.json = Files\restaurants.json
+	EndProjectSection
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AzureDemoEnv", "AzureDemoEnv\AzureDemoEnv.deployproj", "{9907FF91-8E6E-4756-9670-3B17B96902A4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91972FB0-9E9C-4F10-AAB9-EFFB84832222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91972FB0-9E9C-4F10-AAB9-EFFB84832222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91972FB0-9E9C-4F10-AAB9-EFFB84832222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91972FB0-9E9C-4F10-AAB9-EFFB84832222}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9907FF91-8E6E-4756-9670-3B17B96902A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9907FF91-8E6E-4756-9670-3B17B96902A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9907FF91-8E6E-4756-9670-3B17B96902A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9907FF91-8E6E-4756-9670-3B17B96902A4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A82BA667-1E89-46D2-AD91-CA5B0FCDF0BB}
+	EndGlobalSection
+EndGlobal
