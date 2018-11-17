@@ -70,7 +70,7 @@
       }
     },
     {
-      "name": "[variables('AppWestEuropeName')]",
+      "name": "[variables('WebWestEuropeName')]",
       "type": "Microsoft.Web/sites",
       "location": "West Europe",
       "apiVersion": "2015-08-01",
